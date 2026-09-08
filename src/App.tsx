@@ -11,7 +11,10 @@ export default function App() {
   useEffect(() => {
     let leaveTimer: number | undefined;
     let hideTimer: number | undefined;
+    let finished = false;
     const finishLoading = () => {
+      if (finished) return;
+      finished = true;
       leaveTimer = window.setTimeout(() => {
         setLoaderState("leaving");
         hideTimer = window.setTimeout(() => setLoaderState("hidden"), 380);
@@ -20,9 +23,13 @@ export default function App() {
 
     if (document.readyState === "complete") finishLoading();
     else window.addEventListener("load", finishLoading, { once: true });
+    // Если событие load задержалось (упавший ресурс, медленная сеть), экран ожидания
+    // всё равно не должен навсегда перекрывать страницу, включая вход в админку.
+    const safetyTimer = window.setTimeout(finishLoading, 4000);
 
     return () => {
       window.removeEventListener("load", finishLoading);
+      window.clearTimeout(safetyTimer);
       if (leaveTimer) window.clearTimeout(leaveTimer);
       if (hideTimer) window.clearTimeout(hideTimer);
     };
