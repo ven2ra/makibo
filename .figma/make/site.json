@@ -1,0 +1,11 @@
+{
+  "title": "Makibo Site",
+  "description": "Premium online store offering luxury perfumes from top global brands with interactive 3D previews, advanced filters, and seamless shopping experience.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
